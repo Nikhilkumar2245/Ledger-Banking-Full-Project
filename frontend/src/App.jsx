@@ -23,7 +23,6 @@ import {
 // ================= API CONFIGURATION =================
 
 const API_URL =
-  import.meta.env.VITE_API_URL ||
   "https://ledger-banking-full-project.onrender.com/api";
 
 const api = axios.create({
@@ -158,15 +157,20 @@ export default function App() {
           : "Successfully registered"
       );
     } catch (error) {
-      flash(
-        error.response?.data?.message ||
-          "Could not connect to backend"
-      );
-    } finally {
-      setBusy(false);
-    }
-  }
+  console.error("LOGIN ERROR:", error);
 
+  if (error.response) {
+    flash(
+      error.response.data?.message ||
+      `Server error: ${error.response.status}`
+    );
+  } else if (error.request) {
+    flash("Backend request failed. Check CORS/network.");
+  } else {
+    flash(error.message || "Login failed");
+  }
+}
+  }
   // ================= LOGOUT =================
 
   async function logout() {
