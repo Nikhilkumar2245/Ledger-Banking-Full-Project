@@ -20,10 +20,14 @@ import {
 
 // ================= API CONFIGURATION =================
 
+// ================= API CONFIGURATION =================
+
+const API_URL =
+  import.meta.env.VITE_API_URL ||
+  "https://ledger-banking-full-project.onrender.com/api";
+
 const api = axios.create({
-  baseURL:
-    import.meta.env.VITE_API_URL ||
-    "http://localhost:3000/api",
+  baseURL: API_URL,
   withCredentials: true,
 });
 
@@ -36,7 +40,6 @@ api.interceptors.request.use((config) => {
 
   return config;
 });
-
 // ================= HELPER =================
 
 const money = (amount) =>
